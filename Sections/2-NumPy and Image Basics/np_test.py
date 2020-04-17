@@ -31,5 +31,7 @@ mat[:,1]
 mat[:,1].reshape(1,10)
 mat[0:3,0:3]
 
+mynewmat = mat.copy()
+
 
 
