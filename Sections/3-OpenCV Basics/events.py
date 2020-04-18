@@ -9,6 +9,10 @@ def draw_circle(event,x,y,flags,pram):
     
     if event == cv2.EVENT_LBUTTONDOWN:
         cv2.circle(img, (x,y),100, (0,255,0), -1)
+        
+    elif event == cv2.EVENT_RBUTTONDOWN:
+    cv2.circle(img, (x,y), 100, (255,0,0), -1)
+    
 
 cv2.namedWindow(winname='my_drawing')
 
