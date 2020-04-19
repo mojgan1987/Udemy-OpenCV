@@ -39,3 +39,16 @@ pts
 
 cv2.polylines(blank_img2, [pts],isClosed=True, color=(255,0,0), thickness=5)
 plt.imshow(blank_img2)
+
+
+# copy image
+img_cp = img.copy()
+
+
+# triangle
+cv2.polylines(fixed_image, [pts], isClosed=True,color=(0,0,255), thickness=20)
+plt.imshow(fixed_image)
+
+# filled triangle
+cv2.fillPoly(fixed_image, [pts], color=(0,0,255))
+plt.imshow(fixed_image)
