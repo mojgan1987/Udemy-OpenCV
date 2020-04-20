@@ -1,0 +1,101 @@
+# histograms
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+dark_horse = cv2.imread('C://Users//Mojgan//Documents//Python/Udemy/OpenCV/Resources/original/Computer-Vision-with-Python/DATA/horse.jpg')
+show_horse = cv2.cvtColor(dark_horse, cv2.COLOR_BGR2RGB)
+
+rainbow = cv2.imread('C://Users//Mojgan//Documents//Python/Udemy/OpenCV/Resources/original/Computer-Vision-with-Python/DATA/rainbow.jpg')
+show_rainbow = cv2.cvtColor(dark_horse, cv2.COLOR_BGR2RGB)
+
+bricks = cv2.imread('C://Users//Mojgan//Documents//Python/Udemy/OpenCV/Resources/original/Computer-Vision-with-Python/DATA/bricks.jpg')
+show_bricks = cv2.cvtColor(dark_horse, cv2.COLOR_BGR2RGB)
+
+plt.imshow(show_horse)
+
+# BGR
+hist_values = cv2.calcHist([bricks], channels=[0], mask=None,histSize=[256],ranges=[0,256]) # blue channel 0
+hist_values.shape
+plt.plot(hist_values)
+
+# plot hist 
+img = dark_horse
+color = ('b','g','r')
+
+for i,col in enumerate(color):
+    histr = cv2.calcHist([img],[i],None, [256], [0,256])
+    plt.plot(histr, color=col)
+    plt.xlim([0,50])
+    plt.ylim([0,50000])
+    
+plt.title('HISTOGRAM FOR HORSE')
+
+
+## HIST MASKED VS NO MASK
+img = rainbow
+img.shape
+img.shape[:2]
+
+mask = np.zeros(img.shape[:2],np.uint8)
+plt.imshow(mask, cmap='gray')
+
+mask[300:400, 100:400] = 255
+plt.imshow(mask, cmap='gray')
+
+masked_img = cv2.bitwise_and(img,img,mask=mask)
+show_masked_img = cv2.bitwise_and(show_rainbow, show_rainbow, mask=mask)
+plt.imshow(show_masked_img)
+
+# B G R
+hist_mask_values_red = cv2.calcHist([rainbow],channels=[2],mask=mask,histSize=[256],ranges=[0,256])
+hist_values_red = cv2.calcHist([rainbow],channels=[2],mask=None,histSize=[256],ranges=[0,256])
+
+plt.plot(hist_mask_values_red)
+plt.title('RED HIST 4 MASKED RAINBOW')
+
+plt.plot(hist_values_red)
+
+
+##
+# hist equalization: contrast adjustment based on image histogram: reduces color dpth or reducing the shades of gray: higher contrast 
+# similar to gamma
+
+gorilla = cv2.imread('C://Users//Mojgan//Documents//Python/Udemy/OpenCV/Resources/original/Computer-Vision-with-Python/DATA/gorilla.jpg',0)
+
+def display(img, cmap=None):
+    fig = plt.figure(figsize=(10,8))
+    ax = fig.add_subplot(111)
+    ax.imshow(img, cmap)
+    
+display(gorilla, cmap='gray')
+
+gorilla.shape
+
+hist_values = cv2.calcHist([gorilla], channels=[0],mask=None, histSize=[256], ranges=[0,256])
+plt.plot(hist_values)
+
+eq_gorilla = cv2.equalizeHist(gorilla)
+display(eq_gorilla, cmap='gray')
+
+hist_values_eq = cv2.calcHist([eq_gorilla], channels=[0],mask=None, histSize=[256], ranges=[0,256])
+plt.plot(hist_values_eq)
+
+
+# color
+color_gorilla = cv2.imread('C://Users//Mojgan//Documents//Python/Udemy/OpenCV/Resources/original/Computer-Vision-with-Python/DATA/gorilla.jpg')
+show_gorill = cv2.cvtColor(color_gorilla,cv2.COLOR_BGR2RGB)
+display(show_gorill)
+
+# Convert to HSV colorspace
+hsv = cv2.cvtColor(color_gorilla, cv2.COLOR_BGR2HSV)
+# Grab V channel
+hsv[:,:,2].max()
+
+hsv[:,:,2] = cv2.equalizeHist(hsv[:,:,2])
+
+# Convert back to RGB to visualize
+eq_color_gorilla = cv2.cvtColor(hsv, cv2.COLOR_HSV2RGB)
+display(eq_color_gorilla)
+
