@@ -5,3 +5,6 @@
 
 # calculate the color histogram of the target aeaand keep sliding the tracking window to the closest match
 # if the target gets a way or moves toward the camera, mean shift does not work -> CAM (continousy adapted meanshift)
+
+import numpy as np
+import cv2
